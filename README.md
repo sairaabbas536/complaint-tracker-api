@@ -2,11 +2,12 @@
 
 A CRUD-based REST API (with a small website) that lets students of the MUET SZAB Campus, Khairpur Mir's register, view, update and delete campus complaints such as WiFi, water, electricity, classroom and hostel problems. The API stores every complaint in a database and is tested using Postman.
 
-📌**Objective**
+📌**Objective:**
 
 Design, develop and test a database-connected REST API for managing complaints. The API supports all four CRUD operations (Create, Read, Update, Delete), exchanges data in JSON format, returns proper HTTP status codes and handles errors. Built for the SW426 – Software Quality Engineering PBL task.
 
-🛠️ **Tech Stack**
+🛠️ **Tech Stack:**
+
 Node.js
 Express.js
 SQLite (better-sqlite3)
@@ -24,11 +25,12 @@ category: type of problem (e.g. WiFi / Internet, Water, Electricity)
 description: details of the problem
 status: Pending (default), In Progress or Resolved
 
-🔌 **API Endpoints**
+**API Endpoints:**
 
 Base URL: http://localhost:3000/api/complaints
 
-Method	URL	Success	Errors
+**Method	URL	Success	Errors:**
+
 POST	/api/complaints	201	400
 GET	/api/complaints	200	
 GET	/api/complaints/:id	200	404
@@ -38,6 +40,7 @@ DELETE	/api/complaints/:id	200	404
 Example request body (POST and PUT):
 
 **json**
+
 {
   "studentName": "Saira Abbas",
   "rollNo": "K22SW006",
@@ -46,7 +49,8 @@ Example request body (POST and PUT):
   "status": "Pending"
 }
 
-🔍 **What's Included**
+🔍 **What's Included:**
+
 REST API with Create, Read, Update and Delete operations
 SQLite database that stores complaints permanently
 JSON request and response bodies with proper HTTP status codes (200, 201, 400, 404)
@@ -56,32 +60,36 @@ Basic security: prepared SQL statements, escaped output, request size limit, rat
 Website with Student Login (green for correct input, red for wrong input), Dashboard, Register Complaint, All Complaints (search, edit, mark resolved, delete) and Recent Activity
 
 **Postman collection with 17 test cases:**
+
 TC01–TC04: add, get all, get one and update a complaint
 TC05–TC08: missing fields and non-existent IDs
 TC09–TC10: delete a complaint and confirm it cannot be retrieved (404)
 TC11–TC14: wrong ID, invalid name, invalid roll number and invalid status
 TC15–TC17: add Water, Electricity and Classroom complaints
 
-📈 **Key Findings**
+📈 **Key Findings:**
+
 All 17 Postman test cases passed (27 automated checks, 0 failed).
 Every CRUD operation returns the correct status code and the changes are saved in the database.
 Wrong or incomplete data is rejected with 400, and a deleted or non-existent record returns 404.
 Limitations: the login only checks the format of the name and roll number (there is no password), and PUT needs the complete record.
 
-▶️ **How to Run**
+▶️ **How to Run:**
+
 Install Node.js
 Open the project folder in VS Code and run npm install
 Start the server with npm start
-Open http://localhost:3000 in the browser for the website
-Import postman/Complaint_API.postman_collection.json into Postman to test the API, or run npm run test:api in a second terminal
+Open file:///C:/Users/SAIRA%20ABBAS/Desktop/complaint-api/public/index.htmlin the browser for the website
+Import (postman/Complaint_API.postman_collection.json) into Postman to test the API, or run npm run test:api in a second terminal
 
-📁 **Files**
+📁 **Files:**
+
 src/ — server code (app.js, db.js, server.js, validate.js)
 public/ — website (index.html, style.css, app.js, logo.png, campus.png)
 postman/ — Postman collection and Newman test report
 package.json — project dependencies and scripts
 
-**Author**
+**Author:**
 
 Saira Abbas
 
