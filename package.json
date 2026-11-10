@@ -1,0 +1,22 @@
+{
+  "name": "cricketer-api",
+  "version": "1.0.0",
+  "description": "Simple CRUD REST API - Node.js, Express, SQLite. Built for SW426 PBL.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "test:api": "newman run postman/Complaint_API.postman_collection.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "newman": "^6.2.3"
+  },
+  "type": "commonjs"
+}

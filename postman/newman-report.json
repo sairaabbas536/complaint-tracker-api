@@ -1,0 +1,4402 @@
+{
+  "collection": {
+    "item": [
+      {
+        "id": "9a5de2c1-4fc4-4965-ab52-d12eb1cb0177",
+        "name": "TC01 POST valid complaint",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Pending\"}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "bd14e10d-bc40-48fa-ae66-67b580b28d09",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 201\",()=>pm.response.to.have.status(201));",
+                "const j=pm.response.json();pm.test(\"data returned\",()=>{pm.expect(j.id).to.be.a(\"number\");pm.expect(j.category).to.eql(\"WiFi\")});pm.collectionVariables.set(\"id\",j.id);"
+              ],
+              "_lastExecutionId": "da302fff-d906-4f45-8c30-61e9b73e5b50"
+            }
+          }
+        ]
+      },
+      {
+        "id": "5a628bee-6ea4-4301-8bd6-5385f35d81c4",
+        "name": "TC02 GET all complaints",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "ed499669-49e7-4085-b8a7-2d81dabf3df8",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+                "pm.test(\"is array\",()=>pm.expect(pm.response.json()).to.be.an(\"array\"))"
+              ],
+              "_lastExecutionId": "80d0b9a9-a4a8-4353-9091-50419e26f82a"
+            }
+          }
+        ]
+      },
+      {
+        "id": "9a08fd34-c546-4988-8f64-96ddbcda586f",
+        "name": "TC03 GET one complaint",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints",
+              "{{id}}"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "611879ce-16cb-4922-8b03-3d38b5d92fa6",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+                "pm.test(\"correct record\",()=>pm.expect(pm.response.json().rollNo).to.eql(\"K22SW006\"))"
+              ],
+              "_lastExecutionId": "b2e56d3b-0d82-4177-89b7-ea3b0421116b"
+            }
+          }
+        ]
+      },
+      {
+        "id": "18272ba2-1d0f-4144-aa1f-1b1301b1f70f",
+        "name": "TC04 PUT update status",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints",
+              "{{id}}"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Resolved\"}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "dbd85c24-e4fb-44f1-8737-6d1dcac1e361",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+                "pm.test(\"status updated\",()=>pm.expect(pm.response.json().status).to.eql(\"Resolved\"))"
+              ],
+              "_lastExecutionId": "23d6e3cf-b53b-4e51-bb70-ded180d3b46f"
+            }
+          }
+        ]
+      },
+      {
+        "id": "80d3b889-9ea1-49a9-b638-4e0dae17a0e4",
+        "name": "TC05 POST missing fields",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\":\"Saira Abbas\"}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "e325e5e9-b62a-40c3-93b3-78b922d2e7e1",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));"
+              ],
+              "_lastExecutionId": "eee77819-c252-4c6e-888d-794a2bc206b8"
+            }
+          }
+        ]
+      },
+      {
+        "id": "07cb9669-540e-44bf-a9fa-a06febf81b00",
+        "name": "TC06 GET nonexistent ID",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints",
+              "9999"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "9bcc44b2-e6ce-4228-89fa-d29794bc45e1",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+              ],
+              "_lastExecutionId": "630690f9-f65a-4128-b670-db3703d540f0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "aa59fffb-5824-4b98-af13-3c692e75ab1f",
+        "name": "TC07 PUT nonexistent ID",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints",
+              "9999"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Pending\"}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "d6f6321b-d4f2-44c8-b7a1-249442561a02",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+              ],
+              "_lastExecutionId": "a9abbe29-100e-4fb6-a255-bbe4d15e74e9"
+            }
+          }
+        ]
+      },
+      {
+        "id": "f249827f-7094-49af-b7a8-476c577f9b77",
+        "name": "TC08 PUT missing fields",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints",
+              "{{id}}"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"category\":\"Water\"}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "d02d6b05-5818-45c6-b6dd-060576fa3350",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));"
+              ],
+              "_lastExecutionId": "e2506fb4-d0d8-4c90-bb05-599e0f2a2cd4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "faace366-05ab-4549-b297-d99abae08ab4",
+        "name": "TC09 DELETE complaint",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints",
+              "{{id}}"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "DELETE"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "917041f5-e3cb-4d08-a292-41728da34ac2",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));"
+              ],
+              "_lastExecutionId": "d8199efc-8a10-40b3-ba3a-c9ff2dc9ecd4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ebda5abe-b681-421a-84f5-50ddfb350095",
+        "name": "TC10 GET deleted complaint",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints",
+              "{{id}}"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "GET"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "fe93a97c-42ae-4abb-a232-4dc8342eeecd",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+              ],
+              "_lastExecutionId": "c3f915c1-b397-4054-9ce0-4c6dad6bf7d2"
+            }
+          }
+        ]
+      },
+      {
+        "id": "6f8d3503-1fd1-4113-b3d0-a06b91574d88",
+        "name": "TC11 DELETE nonexistent ID",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints",
+              "9999"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "DELETE"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "d3c794f6-02ec-445c-b0db-14d08a88bdf9",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+              ],
+              "_lastExecutionId": "c12a1f36-2b28-48be-9ed9-af812797a215"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1c879049-2cd5-4241-b0b2-fb19e6bcf7ab",
+        "name": "TC12 POST name not capitalised",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\": \"saira abbas\", \"rollNo\": \"K22SW006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Pending\"}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "ebe2290a-8f6c-4d0b-be1d-69b0727d83bf",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));pm.test(\"name error\",()=>pm.expect(pm.response.json().error).to.include(\"studentName\"));"
+              ],
+              "_lastExecutionId": "604c0f3a-d584-4b21-ab4b-1794fb38f9f8"
+            }
+          }
+        ]
+      },
+      {
+        "id": "8f692096-2111-4ad2-81c8-f330694f7e51",
+        "name": "TC13 POST roll number in lowercase",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"k22sw006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Pending\"}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "b887ebc1-4850-4b49-902d-eb20572227ac",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));pm.test(\"roll error\",()=>pm.expect(pm.response.json().error).to.include(\"rollNo\"));"
+              ],
+              "_lastExecutionId": "03076f53-d85f-4435-8d3b-0a6b06fdeae2"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c6c5d88f-24cd-436a-9f36-644555e19eeb",
+        "name": "TC14 POST invalid status",
+        "request": {
+          "url": {
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Done\"}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "b47797f8-9f22-4efb-b5cf-8c92dd990c7a",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));pm.test(\"status error\",()=>pm.expect(pm.response.json().error).to.include(\"status\"));"
+              ],
+              "_lastExecutionId": "87cb839f-6ff8-4937-acbf-a841b351456d"
+            }
+          }
+        ]
+      }
+    ],
+    "event": [],
+    "variable": [
+      {
+        "type": "any",
+        "value": "http://localhost:3000",
+        "key": "baseUrl"
+      },
+      {
+        "type": "any",
+        "value": "",
+        "key": "id"
+      }
+    ],
+    "info": {
+      "_postman_id": "1fb70e00-dcf8-45ad-b188-35b076e802d7",
+      "name": "Campus Complaint Tracker API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    }
+  },
+  "environment": {
+    "id": "76d709e0-7d1f-4e3c-b83f-1c80923dad69",
+    "values": []
+  },
+  "globals": {
+    "id": "451c8aa2-7b3b-45e6-bfa5-386aaa0d9353",
+    "values": []
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 14,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 14,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 14,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 14,
+        "pending": 0,
+        "failed": 0
+      },
+      "tests": {
+        "total": 14,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 21,
+        "pending": 0,
+        "failed": 0
+      },
+      "testScripts": {
+        "total": 14,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 7.785714285714285,
+      "responseMin": 2,
+      "responseMax": 49,
+      "responseSd": 11.724081270302294,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1794254079280,
+      "completed": 1794254079648
+    },
+    "executions": [
+      {
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 14,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "b7d73084-6aa3-4de3-b485-b63fe2fb6a6e",
+          "httpRequestId": "ae962108-1101-4abe-9b7b-c5d614353fb1"
+        },
+        "item": {
+          "id": "9a5de2c1-4fc4-4965-ab52-d12eb1cb0177",
+          "name": "TC01 POST valid complaint",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Pending\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "bd14e10d-bc40-48fa-ae66-67b580b28d09",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\",()=>pm.response.to.have.status(201));",
+                  "const j=pm.response.json();pm.test(\"data returned\",()=>{pm.expect(j.id).to.be.a(\"number\");pm.expect(j.category).to.eql(\"WiFi\")});pm.collectionVariables.set(\"id\",j.id);"
+                ],
+                "_lastExecutionId": "da302fff-d906-4f45-8c30-61e9b73e5b50"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "351388c8-94f6-4ce3-ab57-ad38bc0b9f33",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "162",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Pending\"}"
+          }
+        },
+        "response": {
+          "id": "3d26eb3f-b752-49f1-9fff-282b82e3ac9e",
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "169"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"a9-uFn+Jv/y7CqmnoAUkClYL2KwStE\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              49,
+              44,
+              34,
+              115,
+              116,
+              117,
+              100,
+              101,
+              110,
+              116,
+              78,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              83,
+              97,
+              105,
+              114,
+              97,
+              32,
+              65,
+              98,
+              98,
+              97,
+              115,
+              34,
+              44,
+              34,
+              114,
+              111,
+              108,
+              108,
+              78,
+              111,
+              34,
+              58,
+              34,
+              75,
+              50,
+              50,
+              83,
+              87,
+              48,
+              48,
+              54,
+              34,
+              44,
+              34,
+              99,
+              97,
+              116,
+              101,
+              103,
+              111,
+              114,
+              121,
+              34,
+              58,
+              34,
+              87,
+              105,
+              70,
+              105,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              87,
+              105,
+              70,
+              105,
+              32,
+              105,
+              115,
+              32,
+              110,
+              111,
+              116,
+              32,
+              119,
+              111,
+              114,
+              107,
+              105,
+              110,
+              103,
+              32,
+              105,
+              110,
+              32,
+              116,
+              104,
+              101,
+              32,
+              83,
+              111,
+              102,
+              116,
+              119,
+              97,
+              114,
+              101,
+              32,
+              69,
+              110,
+              103,
+              105,
+              110,
+              101,
+              101,
+              114,
+              105,
+              110,
+              103,
+              32,
+              100,
+              101,
+              112,
+              97,
+              114,
+              116,
+              109,
+              101,
+              110,
+              116,
+              46,
+              34,
+              44,
+              34,
+              115,
+              116,
+              97,
+              116,
+              117,
+              115,
+              34,
+              58,
+              34,
+              80,
+              101,
+              110,
+              100,
+              105,
+              110,
+              103,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 49,
+          "responseSize": 169
+        },
+        "id": "9a5de2c1-4fc4-4965-ab52-d12eb1cb0177",
+        "assertions": [
+          {
+            "assertion": "Status 201",
+            "skipped": false
+          },
+          {
+            "assertion": "data returned",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "79467450-d408-4344-b41d-a6c9a277156f",
+          "length": 14,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "79142a70-c230-4147-ba03-da603a938698"
+        },
+        "item": {
+          "id": "5a628bee-6ea4-4301-8bd6-5385f35d81c4",
+          "name": "TC02 GET all complaints",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ed499669-49e7-4085-b8a7-2d81dabf3df8",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+                  "pm.test(\"is array\",()=>pm.expect(pm.response.json()).to.be.an(\"array\"))"
+                ],
+                "_lastExecutionId": "80d0b9a9-a4a8-4353-9091-50419e26f82a"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "78d8181e-c6a6-4318-b02e-831264f66eb4",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "e9e62a8e-7693-43b6-a833-d690605e5419",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "171"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"ab-M4jqlIQ4YcQgrHeUwe2xOiHY70Q\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              91,
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              49,
+              44,
+              34,
+              115,
+              116,
+              117,
+              100,
+              101,
+              110,
+              116,
+              78,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              83,
+              97,
+              105,
+              114,
+              97,
+              32,
+              65,
+              98,
+              98,
+              97,
+              115,
+              34,
+              44,
+              34,
+              114,
+              111,
+              108,
+              108,
+              78,
+              111,
+              34,
+              58,
+              34,
+              75,
+              50,
+              50,
+              83,
+              87,
+              48,
+              48,
+              54,
+              34,
+              44,
+              34,
+              99,
+              97,
+              116,
+              101,
+              103,
+              111,
+              114,
+              121,
+              34,
+              58,
+              34,
+              87,
+              105,
+              70,
+              105,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              87,
+              105,
+              70,
+              105,
+              32,
+              105,
+              115,
+              32,
+              110,
+              111,
+              116,
+              32,
+              119,
+              111,
+              114,
+              107,
+              105,
+              110,
+              103,
+              32,
+              105,
+              110,
+              32,
+              116,
+              104,
+              101,
+              32,
+              83,
+              111,
+              102,
+              116,
+              119,
+              97,
+              114,
+              101,
+              32,
+              69,
+              110,
+              103,
+              105,
+              110,
+              101,
+              101,
+              114,
+              105,
+              110,
+              103,
+              32,
+              100,
+              101,
+              112,
+              97,
+              114,
+              116,
+              109,
+              101,
+              110,
+              116,
+              46,
+              34,
+              44,
+              34,
+              115,
+              116,
+              97,
+              116,
+              117,
+              115,
+              34,
+              58,
+              34,
+              80,
+              101,
+              110,
+              100,
+              105,
+              110,
+              103,
+              34,
+              125,
+              93
+            ]
+          },
+          "cookie": [],
+          "responseTime": 6,
+          "responseSize": 171
+        },
+        "id": "5a628bee-6ea4-4301-8bd6-5385f35d81c4",
+        "assertions": [
+          {
+            "assertion": "Status 200",
+            "skipped": false
+          },
+          {
+            "assertion": "is array",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "bef0573a-6d21-4739-8d0f-9a28351384be",
+          "length": 14,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "49ccabaf-8f26-4398-8edc-eef813f70d42"
+        },
+        "item": {
+          "id": "9a08fd34-c546-4988-8f64-96ddbcda586f",
+          "name": "TC03 GET one complaint",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints",
+                "{{id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "611879ce-16cb-4922-8b03-3d38b5d92fa6",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+                  "pm.test(\"correct record\",()=>pm.expect(pm.response.json().rollNo).to.eql(\"K22SW006\"))"
+                ],
+                "_lastExecutionId": "b2e56d3b-0d82-4177-89b7-ea3b0421116b"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints",
+              "1"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "514ced10-1f5d-49a0-b9e3-e34f4dda8a78",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "889a4c20-3d77-439b-bcb6-2046fc786572",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "169"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"a9-uFn+Jv/y7CqmnoAUkClYL2KwStE\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              49,
+              44,
+              34,
+              115,
+              116,
+              117,
+              100,
+              101,
+              110,
+              116,
+              78,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              83,
+              97,
+              105,
+              114,
+              97,
+              32,
+              65,
+              98,
+              98,
+              97,
+              115,
+              34,
+              44,
+              34,
+              114,
+              111,
+              108,
+              108,
+              78,
+              111,
+              34,
+              58,
+              34,
+              75,
+              50,
+              50,
+              83,
+              87,
+              48,
+              48,
+              54,
+              34,
+              44,
+              34,
+              99,
+              97,
+              116,
+              101,
+              103,
+              111,
+              114,
+              121,
+              34,
+              58,
+              34,
+              87,
+              105,
+              70,
+              105,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              87,
+              105,
+              70,
+              105,
+              32,
+              105,
+              115,
+              32,
+              110,
+              111,
+              116,
+              32,
+              119,
+              111,
+              114,
+              107,
+              105,
+              110,
+              103,
+              32,
+              105,
+              110,
+              32,
+              116,
+              104,
+              101,
+              32,
+              83,
+              111,
+              102,
+              116,
+              119,
+              97,
+              114,
+              101,
+              32,
+              69,
+              110,
+              103,
+              105,
+              110,
+              101,
+              101,
+              114,
+              105,
+              110,
+              103,
+              32,
+              100,
+              101,
+              112,
+              97,
+              114,
+              116,
+              109,
+              101,
+              110,
+              116,
+              46,
+              34,
+              44,
+              34,
+              115,
+              116,
+              97,
+              116,
+              117,
+              115,
+              34,
+              58,
+              34,
+              80,
+              101,
+              110,
+              100,
+              105,
+              110,
+              103,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 5,
+          "responseSize": 169
+        },
+        "id": "9a08fd34-c546-4988-8f64-96ddbcda586f",
+        "assertions": [
+          {
+            "assertion": "Status 200",
+            "skipped": false
+          },
+          {
+            "assertion": "correct record",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "e18d02c3-dd41-419d-8370-1884269c56e6",
+          "length": 14,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "f90e8acd-0382-428e-890a-73750e799acb"
+        },
+        "item": {
+          "id": "18272ba2-1d0f-4144-aa1f-1b1301b1f70f",
+          "name": "TC04 PUT update status",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints",
+                "{{id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Resolved\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "dbd85c24-e4fb-44f1-8737-6d1dcac1e361",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+                  "pm.test(\"status updated\",()=>pm.expect(pm.response.json().status).to.eql(\"Resolved\"))"
+                ],
+                "_lastExecutionId": "23d6e3cf-b53b-4e51-bb70-ded180d3b46f"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints",
+              "1"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "88467e08-3379-436a-b385-abe50cf6f938",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "163",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Resolved\"}"
+          }
+        },
+        "response": {
+          "id": "87df2b12-c6f1-4790-9769-7e1c7686b80b",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "170"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"aa-nFms/aEGnDAVnL/oxy1t8QvoIfI\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              49,
+              44,
+              34,
+              115,
+              116,
+              117,
+              100,
+              101,
+              110,
+              116,
+              78,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              83,
+              97,
+              105,
+              114,
+              97,
+              32,
+              65,
+              98,
+              98,
+              97,
+              115,
+              34,
+              44,
+              34,
+              114,
+              111,
+              108,
+              108,
+              78,
+              111,
+              34,
+              58,
+              34,
+              75,
+              50,
+              50,
+              83,
+              87,
+              48,
+              48,
+              54,
+              34,
+              44,
+              34,
+              99,
+              97,
+              116,
+              101,
+              103,
+              111,
+              114,
+              121,
+              34,
+              58,
+              34,
+              87,
+              105,
+              70,
+              105,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              87,
+              105,
+              70,
+              105,
+              32,
+              105,
+              115,
+              32,
+              110,
+              111,
+              116,
+              32,
+              119,
+              111,
+              114,
+              107,
+              105,
+              110,
+              103,
+              32,
+              105,
+              110,
+              32,
+              116,
+              104,
+              101,
+              32,
+              83,
+              111,
+              102,
+              116,
+              119,
+              97,
+              114,
+              101,
+              32,
+              69,
+              110,
+              103,
+              105,
+              110,
+              101,
+              101,
+              114,
+              105,
+              110,
+              103,
+              32,
+              100,
+              101,
+              112,
+              97,
+              114,
+              116,
+              109,
+              101,
+              110,
+              116,
+              46,
+              34,
+              44,
+              34,
+              115,
+              116,
+              97,
+              116,
+              117,
+              115,
+              34,
+              58,
+              34,
+              82,
+              101,
+              115,
+              111,
+              108,
+              118,
+              101,
+              100,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 170
+        },
+        "id": "18272ba2-1d0f-4144-aa1f-1b1301b1f70f",
+        "assertions": [
+          {
+            "assertion": "Status 200",
+            "skipped": false
+          },
+          {
+            "assertion": "status updated",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "76a37997-27af-4122-b4ab-03e46fab4f5c",
+          "length": 14,
+          "cycles": 1,
+          "position": 4,
+          "iteration": 0,
+          "httpRequestId": "cb52aa14-af39-488b-a727-63de56565fd0"
+        },
+        "item": {
+          "id": "80d3b889-9ea1-49a9-b638-4e0dae17a0e4",
+          "name": "TC05 POST missing fields",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"studentName\":\"Saira Abbas\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e325e5e9-b62a-40c3-93b3-78b922d2e7e1",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));"
+                ],
+                "_lastExecutionId": "eee77819-c252-4c6e-888d-794a2bc206b8"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "d6d4c42d-4117-4d21-8fd5-e241ece6c10f",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "29",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\":\"Saira Abbas\"}"
+          }
+        },
+        "response": {
+          "id": "c4283415-0f75-47fa-a955-8c90a4006353",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "68"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"44-62ziM4SgMQXkpTo71THEaIXkzFM\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              77,
+              105,
+              115,
+              115,
+              105,
+              110,
+              103,
+              32,
+              111,
+              114,
+              32,
+              105,
+              110,
+              118,
+              97,
+              108,
+              105,
+              100,
+              32,
+              102,
+              105,
+              101,
+              108,
+              100,
+              115,
+              58,
+              32,
+              114,
+              111,
+              108,
+              108,
+              78,
+              111,
+              44,
+              32,
+              99,
+              97,
+              116,
+              101,
+              103,
+              111,
+              114,
+              121,
+              44,
+              32,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 3,
+          "responseSize": 68
+        },
+        "id": "80d3b889-9ea1-49a9-b638-4e0dae17a0e4",
+        "assertions": [
+          {
+            "assertion": "Status 400",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "08ac5c1a-db0f-42af-8218-94363b66444e",
+          "length": 14,
+          "cycles": 1,
+          "position": 5,
+          "iteration": 0,
+          "httpRequestId": "a5aa0d31-206c-4473-bb2a-7ddf10333872"
+        },
+        "item": {
+          "id": "07cb9669-540e-44bf-a9fa-a06febf81b00",
+          "name": "TC06 GET nonexistent ID",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints",
+                "9999"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "9bcc44b2-e6ce-4228-89fa-d29794bc45e1",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+                ],
+                "_lastExecutionId": "630690f9-f65a-4128-b670-db3703d540f0"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints",
+              "9999"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "661de69a-ad3e-48e2-8d31-396f6de59ce8",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "f1a4f182-1b8b-4713-8bd6-b3673969ece4",
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "31"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"1f-Du4AxaMpo1yoCt1VOP/auLH98o8\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              67,
+              111,
+              109,
+              112,
+              108,
+              97,
+              105,
+              110,
+              116,
+              32,
+              110,
+              111,
+              116,
+              32,
+              102,
+              111,
+              117,
+              110,
+              100,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 4,
+          "responseSize": 31
+        },
+        "id": "07cb9669-540e-44bf-a9fa-a06febf81b00",
+        "assertions": [
+          {
+            "assertion": "Status 404",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "a39c1dc4-fded-4c0c-a428-a4f66f3328ad",
+          "length": 14,
+          "cycles": 1,
+          "position": 6,
+          "iteration": 0,
+          "httpRequestId": "80592002-8efa-4058-bf1c-f1959c30459f"
+        },
+        "item": {
+          "id": "aa59fffb-5824-4b98-af13-3c692e75ab1f",
+          "name": "TC07 PUT nonexistent ID",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints",
+                "9999"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Pending\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d6f6321b-d4f2-44c8-b7a1-249442561a02",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+                ],
+                "_lastExecutionId": "a9abbe29-100e-4fb6-a255-bbe4d15e74e9"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints",
+              "9999"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "f0ecfed1-2130-44c2-b0f6-9806a946dd15",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "162",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\":\"Saira Abbas\",\"rollNo\":\"K22SW006\",\"category\":\"WiFi\",\"description\":\"WiFi is not working in the Software Engineering department.\",\"status\":\"Pending\"}"
+          }
+        },
+        "response": {
+          "id": "02f2bd38-8a04-47d3-bf30-917591a9dc2c",
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "31"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"1f-Du4AxaMpo1yoCt1VOP/auLH98o8\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              67,
+              111,
+              109,
+              112,
+              108,
+              97,
+              105,
+              110,
+              116,
+              32,
+              110,
+              111,
+              116,
+              32,
+              102,
+              111,
+              117,
+              110,
+              100,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 3,
+          "responseSize": 31
+        },
+        "id": "aa59fffb-5824-4b98-af13-3c692e75ab1f",
+        "assertions": [
+          {
+            "assertion": "Status 404",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "c4bfdaef-bbcb-4e66-8268-42de41c76352",
+          "length": 14,
+          "cycles": 1,
+          "position": 7,
+          "iteration": 0,
+          "httpRequestId": "f2b212f2-422b-4915-b6bd-fdd0146d50f2"
+        },
+        "item": {
+          "id": "f249827f-7094-49af-b7a8-476c577f9b77",
+          "name": "TC08 PUT missing fields",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints",
+                "{{id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"category\":\"Water\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d02d6b05-5818-45c6-b6dd-060576fa3350",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));"
+                ],
+                "_lastExecutionId": "e2506fb4-d0d8-4c90-bb05-599e0f2a2cd4"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints",
+              "1"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "24740197-d581-47cc-951c-c60073b76a3e",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "20",
+              "system": true
+            }
+          ],
+          "method": "PUT",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"category\":\"Water\"}"
+          }
+        },
+        "response": {
+          "id": "b1ac564e-f2ac-43b6-9ea0-f7a63b05b6dc",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "71"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"47-iCSFj8HgwQgZHAxF23WtrTb6rHU\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              77,
+              105,
+              115,
+              115,
+              105,
+              110,
+              103,
+              32,
+              111,
+              114,
+              32,
+              105,
+              110,
+              118,
+              97,
+              108,
+              105,
+              100,
+              32,
+              102,
+              105,
+              101,
+              108,
+              100,
+              115,
+              58,
+              32,
+              115,
+              116,
+              117,
+              100,
+              101,
+              110,
+              116,
+              78,
+              97,
+              109,
+              101,
+              44,
+              32,
+              114,
+              111,
+              108,
+              108,
+              78,
+              111,
+              44,
+              32,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 3,
+          "responseSize": 71
+        },
+        "id": "f249827f-7094-49af-b7a8-476c577f9b77",
+        "assertions": [
+          {
+            "assertion": "Status 400",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "cc5c21b0-4c1d-466a-b819-28d2fa27a3f9",
+          "length": 14,
+          "cycles": 1,
+          "position": 8,
+          "iteration": 0,
+          "httpRequestId": "66747916-bf21-419a-b5c2-a3a9e65f2165"
+        },
+        "item": {
+          "id": "faace366-05ab-4549-b297-d99abae08ab4",
+          "name": "TC09 DELETE complaint",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints",
+                "{{id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "917041f5-e3cb-4d08-a292-41728da34ac2",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));"
+                ],
+                "_lastExecutionId": "d8199efc-8a10-40b3-ba3a-c9ff2dc9ecd4"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints",
+              "1"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "07e243f3-9f64-40bd-93c2-494476256451",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "DELETE"
+        },
+        "response": {
+          "id": "b2a723a0-0afe-48fa-93c8-13ea4956f72a",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "31"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"1f-gSMY5aptpoR+yrL/xc5nD4w0FUU\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
+              67,
+              111,
+              109,
+              112,
+              108,
+              97,
+              105,
+              110,
+              116,
+              32,
+              100,
+              101,
+              108,
+              101,
+              116,
+              101,
+              100,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 31
+        },
+        "id": "faace366-05ab-4549-b297-d99abae08ab4",
+        "assertions": [
+          {
+            "assertion": "Status 200",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "17e0892b-ae0c-4ee0-85cf-aafb3c0ad43e",
+          "length": 14,
+          "cycles": 1,
+          "position": 9,
+          "iteration": 0,
+          "httpRequestId": "be6bddff-d689-48a1-a8d9-edc7d2c2c4aa"
+        },
+        "item": {
+          "id": "ebda5abe-b681-421a-84f5-50ddfb350095",
+          "name": "TC10 GET deleted complaint",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints",
+                "{{id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "fe93a97c-42ae-4abb-a232-4dc8342eeecd",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+                ],
+                "_lastExecutionId": "c3f915c1-b397-4054-9ce0-4c6dad6bf7d2"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints",
+              "1"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "f9f417ba-5a10-4436-be3b-da572bcbabb3",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "9124ac3a-00fe-47e1-ad77-77fa424cc1b3",
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "31"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"1f-Du4AxaMpo1yoCt1VOP/auLH98o8\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              67,
+              111,
+              109,
+              112,
+              108,
+              97,
+              105,
+              110,
+              116,
+              32,
+              110,
+              111,
+              116,
+              32,
+              102,
+              111,
+              117,
+              110,
+              100,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 3,
+          "responseSize": 31
+        },
+        "id": "ebda5abe-b681-421a-84f5-50ddfb350095",
+        "assertions": [
+          {
+            "assertion": "Status 404",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "516f9e09-c656-499e-9f06-81723cea1e0d",
+          "length": 14,
+          "cycles": 1,
+          "position": 10,
+          "iteration": 0,
+          "httpRequestId": "aa168277-ca04-49e6-a81b-8888998fcab7"
+        },
+        "item": {
+          "id": "6f8d3503-1fd1-4113-b3d0-a06b91574d88",
+          "name": "TC11 DELETE nonexistent ID",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints",
+                "9999"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "d3c794f6-02ec-445c-b0db-14d08a88bdf9",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+                ],
+                "_lastExecutionId": "c12a1f36-2b28-48be-9ed9-af812797a215"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints",
+              "9999"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "9374604a-a6d5-46be-a44b-c10908f2bc04",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "DELETE"
+        },
+        "response": {
+          "id": "4c519686-7e75-4330-a2ef-03d924f1690a",
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "31"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"1f-Du4AxaMpo1yoCt1VOP/auLH98o8\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              67,
+              111,
+              109,
+              112,
+              108,
+              97,
+              105,
+              110,
+              116,
+              32,
+              110,
+              111,
+              116,
+              32,
+              102,
+              111,
+              117,
+              110,
+              100,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 2,
+          "responseSize": 31
+        },
+        "id": "6f8d3503-1fd1-4113-b3d0-a06b91574d88",
+        "assertions": [
+          {
+            "assertion": "Status 404",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "0f50f6f2-d580-4e3d-9217-65b4d5d5f832",
+          "length": 14,
+          "cycles": 1,
+          "position": 11,
+          "iteration": 0,
+          "httpRequestId": "5041e737-0a00-48fc-8bbe-c32ddc99946c"
+        },
+        "item": {
+          "id": "1c879049-2cd5-4241-b0b2-fb19e6bcf7ab",
+          "name": "TC12 POST name not capitalised",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"studentName\": \"saira abbas\", \"rollNo\": \"K22SW006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Pending\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ebe2290a-8f6c-4d0b-be1d-69b0727d83bf",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));pm.test(\"name error\",()=>pm.expect(pm.response.json().error).to.include(\"studentName\"));"
+                ],
+                "_lastExecutionId": "604c0f3a-d584-4b21-ab4b-1794fb38f9f8"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "a5253272-4b7f-4162-9ceb-47c786e61e5c",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "116",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\": \"saira abbas\", \"rollNo\": \"K22SW006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Pending\"}"
+          }
+        },
+        "response": {
+          "id": "7c540a72-216b-4573-9d23-c263489946ee",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "115"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"73-es0QhNrq3P5mkA12Niw0IDP+6pc\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              73,
+              110,
+              118,
+              97,
+              108,
+              105,
+              100,
+              32,
+              115,
+              116,
+              117,
+              100,
+              101,
+              110,
+              116,
+              78,
+              97,
+              109,
+              101,
+              58,
+              32,
+              117,
+              115,
+              101,
+              32,
+              116,
+              104,
+              101,
+              32,
+              102,
+              117,
+              108,
+              108,
+              32,
+              110,
+              97,
+              109,
+              101,
+              32,
+              119,
+              105,
+              116,
+              104,
+              32,
+              101,
+              97,
+              99,
+              104,
+              32,
+              119,
+              111,
+              114,
+              100,
+              32,
+              115,
+              116,
+              97,
+              114,
+              116,
+              105,
+              110,
+              103,
+              32,
+              119,
+              105,
+              116,
+              104,
+              32,
+              97,
+              32,
+              99,
+              97,
+              112,
+              105,
+              116,
+              97,
+              108,
+              32,
+              108,
+              101,
+              116,
+              116,
+              101,
+              114,
+              32,
+              40,
+              101,
+              46,
+              103,
+              46,
+              32,
+              83,
+              97,
+              105,
+              114,
+              97,
+              32,
+              65,
+              98,
+              98,
+              97,
+              115,
+              41,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 12,
+          "responseSize": 115
+        },
+        "id": "1c879049-2cd5-4241-b0b2-fb19e6bcf7ab",
+        "assertions": [
+          {
+            "assertion": "Status 400",
+            "skipped": false
+          },
+          {
+            "assertion": "name error",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "4ed94ff3-0cbf-4047-a613-1d36e4eae78d",
+          "length": 14,
+          "cycles": 1,
+          "position": 12,
+          "iteration": 0,
+          "httpRequestId": "08bbf609-7537-4805-957d-a6efd92fbf45"
+        },
+        "item": {
+          "id": "8f692096-2111-4ad2-81c8-f330694f7e51",
+          "name": "TC13 POST roll number in lowercase",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"k22sw006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Pending\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b887ebc1-4850-4b49-902d-eb20572227ac",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));pm.test(\"roll error\",()=>pm.expect(pm.response.json().error).to.include(\"rollNo\"));"
+                ],
+                "_lastExecutionId": "03076f53-d85f-4435-8d3b-0a6b06fdeae2"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "e614cf7c-4b29-42cf-81de-b126c1fa7081",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "116",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"k22sw006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Pending\"}"
+          }
+        },
+        "response": {
+          "id": "5fe91349-d53a-4958-802c-7dd8c1361c0e",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "67"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"43-wVvxJgJbNs97pK+0DQlZFp2k3ss\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              73,
+              110,
+              118,
+              97,
+              108,
+              105,
+              100,
+              32,
+              114,
+              111,
+              108,
+              108,
+              78,
+              111,
+              58,
+              32,
+              117,
+              115,
+              101,
+              32,
+              99,
+              97,
+              112,
+              105,
+              116,
+              97,
+              108,
+              32,
+              108,
+              101,
+              116,
+              116,
+              101,
+              114,
+              115,
+              32,
+              111,
+              110,
+              108,
+              121,
+              44,
+              32,
+              101,
+              46,
+              103,
+              46,
+              32,
+              75,
+              50,
+              50,
+              83,
+              87,
+              48,
+              48,
+              54,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 3,
+          "responseSize": 67
+        },
+        "id": "8f692096-2111-4ad2-81c8-f330694f7e51",
+        "assertions": [
+          {
+            "assertion": "Status 400",
+            "skipped": false
+          },
+          {
+            "assertion": "roll error",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "94c76471-272c-4d52-aec9-b89f7951e8fd",
+          "length": 14,
+          "cycles": 1,
+          "position": 13,
+          "iteration": 0,
+          "httpRequestId": "d349626f-6138-4821-ba9e-67d5cad50e74"
+        },
+        "item": {
+          "id": "c6c5d88f-24cd-436a-9f36-644555e19eeb",
+          "name": "TC14 POST invalid status",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "complaints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Done\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "b47797f8-9f22-4efb-b5cf-8c92dd990c7a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));pm.test(\"status error\",()=>pm.expect(pm.response.json().error).to.include(\"status\"));"
+                ],
+                "_lastExecutionId": "87cb839f-6ff8-4937-acbf-a841b351456d"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "complaints"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "42c1245a-9390-421b-b064-c27662d9343c",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "113",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"WiFi\", \"description\": \"Test\", \"status\": \"Done\"}"
+          }
+        },
+        "response": {
+          "id": "79d68487-5c2f-411a-97ef-cab2cc919334",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "no-referrer"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "73"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"49-JhO5rrNpbFXaw/ZUSFiQaPf0huk\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 09 Nov 2026 19:54:39 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              73,
+              110,
+              118,
+              97,
+              108,
+              105,
+              100,
+              32,
+              115,
+              116,
+              97,
+              116,
+              117,
+              115,
+              58,
+              32,
+              109,
+              117,
+              115,
+              116,
+              32,
+              98,
+              101,
+              32,
+              111,
+              110,
+              101,
+              32,
+              111,
+              102,
+              32,
+              80,
+              101,
+              110,
+              100,
+              105,
+              110,
+              103,
+              44,
+              32,
+              73,
+              110,
+              32,
+              80,
+              114,
+              111,
+              103,
+              114,
+              101,
+              115,
+              115,
+              44,
+              32,
+              82,
+              101,
+              115,
+              111,
+              108,
+              118,
+              101,
+              100,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 2,
+          "responseSize": 73
+        },
+        "id": "c6c5d88f-24cd-436a-9f36-644555e19eeb",
+        "assertions": [
+          {
+            "assertion": "Status 400",
+            "skipped": false
+          },
+          {
+            "assertion": "status error",
+            "skipped": false
+          }
+        ]
+      }
+    ],
+    "transfers": {
+      "responseTotal": 1228
+    },
+    "failures": [],
+    "error": null
+  }
+}

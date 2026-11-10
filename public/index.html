@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Complaint Tracker</title>
+<link rel="stylesheet" href="style.css">
+<script>
+// If public/logo.png is missing, show a simple badge instead
+function fallbackLogo(img){var d=document.createElement('div');d.className='logo-fallback'+(img.classList.contains('big')?' big':'');d.textContent='CCT';img.replaceWith(d);}
+</script>
+</head>
+<body>
+
+<!-- ================= STUDENT LOGIN ================= -->
+<section id="login" class="login">
+  <div class="login-hero">
+    <div class="hero-text">
+      <span class="eyebrow">MUET SZAB Campus, Khairpur Mir’s</span>
+      <h1>Campus Complaint Tracker</h1>
+      <p>Report problems on campus, such as WiFi, water, electricity, classrooms or hostel, and track whether they are Pending, In Progress or Resolved.</p>
+      <small>SW426 – Software Quality Engineering · PBL Project<br>MUET SZAB Campus, Khairpur Mir’s · Department of Software Engineering</small>
+    </div>
+  </div>
+  <div class="login-panel">
+    <form id="loginForm" class="login-box">
+      <img src="logo.png" alt="Logo" class="logo big" onerror="fallbackLogo(this)">
+      <h2>Student Login</h2>
+      <p class="muted">Campus Complaint Tracker</p>
+      <label>Full Name <input id="wName" required maxlength="60" value="Saira Abbas" placeholder="e.g. Saira Abbas" autocomplete="off"><small class="hint" id="wNameHint"></small></label>
+      <label>Roll Number <input id="wRoll" required maxlength="8" value="K22SW006" placeholder="e.g. K22SW006" autocomplete="off"><small class="hint" id="wRollHint"></small></label>
+      <button class="btn primary block" type="submit" id="loginBtn">Sign In</button>
+      <p class="note">Name: full name, each word starting with a capital letter. Roll number: capital letters only. This is a student project and not an official university portal.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ================= MAIN PORTAL ================= -->
+<div id="app" hidden>
+  <header class="topbar">
+    <div class="tb-left">
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+      <img src="logo.png" alt="Logo" class="logo" onerror="fallbackLogo(this)">
+      <span class="tb-title">Complaint Tracker</span>
+    </div>
+    <div class="tb-right">
+      <div class="who"><strong id="uName"></strong><span id="uRoll"></span></div>
+      <button class="btn small light" id="logout">Logout</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidebar" id="sidebar">
+      <a href="#" data-view="dashboard" class="active"><i>▦</i> Dashboard</a>
+      <a href="#" data-view="register"><i>＋</i> Register Complaint</a>
+      <a href="#" data-view="list"><i>☰</i> All Complaints</a>
+      <a href="#" data-view="activity"><i>◷</i> Recent Activity</a>
+    </nav>
+
+    <main class="content">
+      <div id="offline" class="offline" hidden><b>Cannot connect to the server.</b> Start it with <code>npm start</code> in the VS Code terminal, then open <b>http://localhost:3000</b> in the browser.</div>
+      <!-- Dashboard -->
+      <section data-panel="dashboard">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="notice">Welcome, <strong class="uNameInline"></strong>. Use <b>Register Complaint</b> to report a new problem and <b>All Complaints</b> to view, edit or delete complaints.</div>
+        <div class="stats">
+          <div class="stat"><i class="ico">📋</i><div><span id="sTotal">0</span><small>Total complaints</small></div></div>
+          <div class="stat pending"><i class="ico">⏳</i><div><span id="sPending">0</span><small>Pending</small></div></div>
+          <div class="stat progress"><i class="ico">🔧</i><div><span id="sProgress">0</span><small>In Progress</small></div></div>
+          <div class="stat resolved"><i class="ico">✅</i><div><span id="sResolved">0</span><small>Resolved</small></div></div>
+        </div>
+        <div class="card">
+          <h2>Latest Complaints</h2>
+          <div class="table-wrap"><table><thead><tr><th>ID</th><th>Student</th><th>Category</th><th>Status</th></tr></thead><tbody id="latestRows"></tbody></table></div>
+          <p id="latestEmpty" class="empty-hint" hidden>No complaints yet. Click <b>Register Complaint</b> in the menu to report your first problem.</p>
+        </div>
+        <div class="card">
+          <h2>Complaints by Category</h2>
+          <div id="catBars"></div>
+          <p id="catEmpty" class="muted" hidden>Category counts will appear here.</p>
+        </div>
+      </section>
+
+      <!-- Create / Update -->
+      <section data-panel="register" hidden>
+        <h1 class="page-title" id="formTitle">Register a New Complaint</h1>
+        <div class="card narrow">
+          <form id="complaintForm">
+            <input type="hidden" id="editId">
+            <label>Student Name <input id="fName" required maxlength="60"><small class="hint" id="fNameHint"></small></label>
+            <label>Roll Number <input id="fRoll" required maxlength="8"><small class="hint" id="fRollHint"></small></label>
+            <label>Category
+              <select id="fCategory" required>
+                <option value="">Select category</option>
+                <option>WiFi / Internet</option><option>Water</option><option>Electricity</option>
+                <option>Classroom / Furniture</option><option>Hostel</option><option>Transport</option>
+                <option>Library</option><option>Other</option>
+              </select>
+            </label>
+            <label>Description <textarea id="fDesc" rows="4" required maxlength="500" placeholder="Describe the problem…"></textarea></label>
+            <label>Status
+              <select id="fStatus"><option>Pending</option><option>In Progress</option><option>Resolved</option></select>
+            </label>
+            <div class="row">
+              <button class="btn primary" type="submit" id="submitBtn">Submit Complaint</button>
+              <button class="btn" type="button" id="cancelEdit" hidden>Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Read / Delete -->
+      <section data-panel="list" hidden>
+        <h1 class="page-title">All Complaints</h1>
+        <div class="card">
+          <div class="list-head">
+            <input id="search" class="search" type="search" placeholder="Search by name, roll no, category or text…">
+            <select id="filter">
+              <option value="">All statuses</option><option>Pending</option><option>In Progress</option><option>Resolved</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Student</th><th>Category</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+          <p id="empty" class="muted" hidden>No complaints found.</p>
+        </div>
+      </section>
+
+      <!-- Activity -->
+      <section data-panel="activity" hidden>
+        <h1 class="page-title">Recent Activity</h1>
+        <div class="card"><ul id="activity" class="activity"></ul></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+{
+  "info": {
+    "name": "Campus Complaint Tracker API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC01 POST valid complaint",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 201\",()=>pm.response.to.have.status(201));",
+              "const j=pm.response.json();pm.test(\"data returned\",()=>{pm.expect(j.id).to.be.a(\"number\");pm.expect(j.category).to.eql(\"WiFi / Internet\")});pm.collectionVariables.set(\"id\",j.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"WiFi / Internet\", \"description\": \"WiFi is not working in the Software Engineering department.\", \"status\": \"Pending\"}"
+        }
+      }
+    },
+    {
+      "name": "TC02 GET all complaints",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"is array\",()=>pm.expect(pm.response.json()).to.be.an(\"array\"))"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints"
+      }
+    },
+    {
+      "name": "TC03 GET one complaint",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"correct record\",()=>{const j=pm.response.json();pm.expect(j.rollNo).to.eql(\"K22SW006\");pm.expect(j.category).to.eql(\"WiFi / Internet\")})"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints/{{id}}"
+      }
+    },
+    {
+      "name": "TC04 PUT update status",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"status updated\",()=>pm.expect(pm.response.json().status).to.eql(\"Resolved\"))"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints/{{id}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"WiFi / Internet\", \"description\": \"WiFi is not working in the Software Engineering department.\", \"status\": \"Resolved\"}"
+        }
+      }
+    },
+    {
+      "name": "TC05 POST missing fields",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\":\"Saira Abbas\"}"
+        }
+      }
+    },
+    {
+      "name": "TC06 GET nonexistent ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints/9999"
+      }
+    },
+    {
+      "name": "TC07 PUT nonexistent ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints/9999",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"Electricity\", \"description\": \"Lights are not working.\", \"status\": \"Pending\"}"
+        }
+      }
+    },
+    {
+      "name": "TC08 PUT missing fields",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints/{{id}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"category\":\"Water\"}"
+        }
+      }
+    },
+    {
+      "name": "TC09 DELETE complaint",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// create a temporary complaint (Water) that TC09 will delete, so the other complaints stay in the database",
+              "pm.sendRequest({url: pm.collectionVariables.get('baseUrl') + '/api/complaints', method: 'POST', header: {'Content-Type': 'application/json'}, body: {mode: 'raw', raw: \"{\\\"studentName\\\": \\\"Saira Abbas\\\", \\\"rollNo\\\": \\\"K22SW006\\\", \\\"category\\\": \\\"Water\\\", \\\"description\\\": \\\"Temporary complaint created for the delete test.\\\", \\\"status\\\": \\\"Pending\\\"}\"}}, (err, res) => { pm.collectionVariables.set('tmpId', res.json().id); });"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\",()=>pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints/{{tmpId}}"
+      }
+    },
+    {
+      "name": "TC10 GET deleted complaint",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints/{{tmpId}}"
+      }
+    },
+    {
+      "name": "TC11 DELETE nonexistent ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 404\",()=>pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints/9999"
+      }
+    },
+    {
+      "name": "TC12 POST name not capitalised",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"name error\",()=>pm.expect(pm.response.json().error).to.include(\"studentName\"))"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"saira abbas\", \"rollNo\": \"K22SW006\", \"category\": \"Hostel\", \"description\": \"Water leakage in the hostel.\", \"status\": \"Pending\"}"
+        }
+      }
+    },
+    {
+      "name": "TC13 POST roll number in lowercase",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"roll error\",()=>pm.expect(pm.response.json().error).to.include(\"rollNo\"))"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"k22sw006\", \"category\": \"Library\", \"description\": \"Not enough books in the library.\", \"status\": \"Pending\"}"
+        }
+      }
+    },
+    {
+      "name": "TC14 POST invalid status",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"status error\",()=>pm.expect(pm.response.json().error).to.include(\"status\"))"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"Transport\", \"description\": \"University bus is always late.\", \"status\": \"Done\"}"
+        }
+      }
+    },
+    {
+      "name": "TC15 POST Water complaint",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 201\",()=>pm.response.to.have.status(201));",
+              "pm.test(\"category saved\",()=>pm.expect(pm.response.json().category).to.eql(\"Water\"));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"Water\", \"description\": \"No drinking water available near the library.\", \"status\": \"Pending\"}"
+        }
+      }
+    },
+    {
+      "name": "TC16 POST Electricity complaint",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 201\",()=>pm.response.to.have.status(201));",
+              "pm.test(\"category saved\",()=>pm.expect(pm.response.json().category).to.eql(\"Electricity\"));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"Electricity\", \"description\": \"Lights and fans are not working in classroom SE-3.\", \"status\": \"Pending\"}"
+        }
+      }
+    },
+    {
+      "name": "TC17 POST Classroom complaint",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 201\",()=>pm.response.to.have.status(201));",
+              "pm.test(\"category saved\",()=>pm.expect(pm.response.json().category).to.eql(\"Classroom / Furniture\"));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/complaints",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentName\": \"Saira Abbas\", \"rollNo\": \"K22SW006\", \"category\": \"Classroom / Furniture\", \"description\": \"Broken chairs in the second-year classroom.\", \"status\": \"Pending\"}"
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "id",
+      "value": ""
+    },
+    {
+      "key": "tmpId",
+      "value": ""
+    }
+  ]
+}
