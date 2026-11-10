@@ -1,8 +1,8 @@
-#**Campus Complaint Tracker 🏫**
+#**Campus Complaint Tracker 🏫**#
 
 A CRUD-based REST API (with a small website) that lets students of the MUET SZAB Campus, Khairpur Mir's register, view, update and delete campus complaints such as WiFi, water, electricity, classroom and hostel problems. The API stores every complaint in a database and is tested using Postman.
 
-##📌 Objective
+##📌 Objective ##
 
 Design, develop and test a database-connected REST API for managing complaints. The API supports all four CRUD operations (Create, Read, Update, Delete), exchanges data in JSON format, returns proper HTTP status codes and handles errors. Built for the SW426 – Software Quality Engineering PBL task.
 
